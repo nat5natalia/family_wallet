@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>ВТБ Семья — семейный кошелёк</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0B2F5F 0%, #0A2A4E 50%, #092340 100%);
+            color: #FFFFFF;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        /* Типографика */
+        h1, h2, h3 {
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-size: 32px;
+            background: linear-gradient(135deg, #FFFFFF 0%, #E0E8F0 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        h2 {
+            font-size: 28px;
+            margin-bottom: 24px;
+            color: #FFFFFF;
+        }
+        h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: #FFFFFF;
+        }
+
+        @media (min-width: 768px) {
+            h1 { font-size: 44px; }
+            h2 { font-size: 36px; }
+            h3 { font-size: 24px; }
+        }
+
+        /* Контейнеры */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 48px 0;
+            position: relative;
+        }
+
+        @media (min-width: 768px) {
+            section {
+                padding: 80px 0;
+            }
+        }
+
+        /* Декоративные элементы фона */
+        .bg-dots {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 20% 40%, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Header & навигация */
+        header {
+            background: rgba(11, 47, 95, 0.95);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #00A35C;
+            letter-spacing: -0.3px;
+        }
+        .nav-links {
+            display: none;
+            gap: 32px;
+            align-items: center;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #FFFFFF;
+            font-weight: 500;
+            transition: color 0.2s;
+            opacity: 0.9;
+        }
+        .nav-links a:hover {
+            color: #00A35C;
+            opacity: 1;
+        }
+        .burger {
+            font-size: 28px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #00A35C;
+        }
+        @media (min-width: 768px) {
+            .nav-links { display: flex; }
+            .burger { display: none; }
+        }
+        .mobile-menu {
+            display: flex;
+            flex-direction: column;
+            background: rgba(11, 47, 95, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            gap: 16px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .mobile-menu a {
+            text-decoration: none;
+            font-weight: 500;
+            color: #FFFFFF;
+            font-size: 1.2rem;
+        }
+        .hidden {
+            display: none;
+        }
+
+        /* Кнопки */
+        .btn-primary {
+            background: linear-gradient(135deg, #00A35C 0%, #008A4C 100%);
+            color: white;
+            border: none;
+            border-radius: 48px;
+            padding: 14px 32px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-block;
+            text-decoration: none;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,163,92,0.3);
+        }
+        .btn-primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(0,163,92,0.4);
+            background: linear-gradient(135deg, #00B868 0%, #009E55 100%);
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 48px;
+            padding: 12px 28px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-block;
+            text-decoration: none;
+            text-align: center;
+        }
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.25);
+            transform: scale(1.02);
+        }
+
+        /* Карточки */
+        .card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 24px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            color: #FFFFFF;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.25);
+        }
+
+        /* Герой-виджет */
+        .hero-widget {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 32px;
+            padding: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            max-width: 500px;
+            margin-top: 24px;
+        }
+        .family-budget {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .member {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 16px;
+        }
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            height: 10px;
+            width: 100%;
+            margin: 10px 0;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, #FF8C42, #FFA96E);
+            width: 45%;
+            height: 10px;
+            border-radius: 30px;
+        }
+
+        /* Три столпа */
+        .pillars {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-top: 32px;
+        }
+        @media (min-width: 768px) {
+            .pillars { flex-direction: row; }
+        }
+
+        /* Табы сценариев */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .tab-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 48px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #FFFFFF;
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, #00A35C, #008A4C);
+            border-color: transparent;
+        }
+        .tab-content {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 24px;
+            border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        .tab-pane {
+            display: none;
+        }
+        .tab-pane.active-pane {
+            display: block;
+        }
+
+        /* Инфографика */
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-top: 24px;
+        }
+        @media (min-width: 768px) {
+            .steps { flex-direction: row; justify-content: space-between; }
+        }
+        .step {
+            flex: 1;
+            text-align: center;
+            background: rgba(255,255,255,0.08);
+            padding: 24px;
+            border-radius: 24px;
+            backdrop-filter: blur(10px);
+        }
+        .step-number {
+            background: linear-gradient(135deg, #FF8C42, #FFA96E);
+            width: 48px;
+            height: 48px;
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-weight: bold;
+            color: white;
+            font-size: 24px;
+        }
+
+        /* отзывы */
+        .reviews {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        @media (min-width: 768px) {
+            .reviews { flex-direction: row; }
+        }
+
+        /* футер */
+        footer {
+            background: rgba(5, 25, 50, 0.95);
+            color: rgba(255,255,255,0.7);
+            padding: 48px 0 24px;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* анимация при скролле */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Модальные окна */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .modal-content {
+            background: linear-gradient(135deg, #0B2F5F 0%, #0A2A4E 100%);
+            border-radius: 32px;
+            padding: 40px 32px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 24px;
+            font-size: 32px;
+            cursor: pointer;
+            color: rgba(255,255,255,0.7);
+            transition: color 0.2s;
+            line-height: 1;
+        }
+        .modal-close:hover {
+            color: #FF8C42;
+        }
+        .modal h3 {
+            font-size: 28px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 24px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.9);
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 16px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #00A35C;
+            background: rgba(255,255,255,0.15);
+        }
+        .form-group input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+        }
+        .modal-buttons button {
+            flex: 1;
+        }
+        .success-icon {
+            text-align: center;
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        .invite-link {
+            background: rgba(255,255,255,0.1);
+            padding: 12px;
+            border-radius: 16px;
+            text-align: center;
+            margin: 20px 0;
+            word-break: break-all;
+            font-family: monospace;
+        }
+
+        /* Дополнительные стили для текста */
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin: 24px 0;
+            opacity: 0.95;
+        }
+        p {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-dots"></div>
+
+<header>
+    <div class="header-inner">
+        <div class="logo">ВТБ Семья</div>
+        <nav class="nav-links">
+            <a href="#hero">Главная</a>
+            <a href="#scenarios">Сценарии</a>
+            <a href="#how-it-works">Как работает</a>
+            <a href="#academy">Академия</a>
+        </nav>
+        <button class="burger" id="burgerBtn">☰</button>
+    </div>
+    <div id="mobileMenu" class="mobile-menu hidden">
+        <a href="#hero">Главная</a>
+        <a href="#scenarios">Сценарии</a>
+        <a href="#how-it-works">Как работает</a>
+        <a href="#academy">Академия</a>
+    </div>
+</header>
+
+<main>
+    <!-- Hero секция -->
+    <section id="hero">
+        <div class="container">
+            <div style="display: flex; flex-direction: column; gap: 40px; align-items: center;">
+                <div style="flex:1; text-align: center;">
+                    <h1>Всё, что вы тратите и копите — под одной крышей</h1>
+                    <p class="hero-subtitle">Общий счёт, копилки на мечту и родительский контроль в одном приложении ВТБ</p>
+                    <a href="#" class="btn-primary" id="mainCta">Создать семейный кошелёк</a>
+                </div>
+                <div class="hero-widget fade-up">
+                    <h3>📊 Сегодня в семье</h3>
+                    <div class="family-budget">
+                        <div class="member">👩 Мама<br>4 200 ₽</div>
+                        <div class="member">👨 Папа<br>6 800 ₽</div>
+                        <div class="member">🧑 Сын<br>850 ₽</div>
+                    </div>
+                    <div>🎯 Общая цель «Ремонт»</div>
+                    <div class="progress-bar"><div class="progress-fill"></div></div>
+                    <div>45 000 ₽ из 100 000 ₽</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Суть (3 столпа) -->
+    <section>
+        <div class="container">
+            <h2 class="fade-up" style="text-align: center;">Семейные финансы — без хаоса</h2>
+            <div class="pillars">
+                <div class="card fade-up">💰 Общий счёт — видите все траты онлайн</div>
+                <div class="card fade-up">🏦 Общие копилки — копите на море, квартиру, дачу</div>
+                <div class="card fade-up">👪 Родительский контроль — лимиты и задания для детей</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Сценарии (табы) -->
+    <section id="scenarios">
+        <div class="container">
+            <h2 class="fade-up" style="text-align: center;">Зачем это вам?</h2>
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="tab1">📚 Дети и задания</button>
+                <button class="tab-btn" data-tab="tab2">💎 Приватные траты</button>
+                <button class="tab-btn" data-tab="tab3">🌊 Общая копилка</button>
+            </div>
+            <div class="tab-content">
+                <div id="tab1" class="tab-pane active-pane">
+                    <h3>Дети получают деньги за оценки и дела</h3>
+                    <p>Назначайте задания (уроки, уборка) — после выполнения ребёнок получает сумму на свою виртуальную карту. Учим финансовой грамотности с детства.</p>
+                </div>
+                <div id="tab2" class="tab-pane">
+                    <h3>Муж не видит, что я купила платье?</h3>
+                    <p>Приватные траты скрыты по категориям (например «Одежда»). Видна только сумма категории без деталей чека — баланс между доверием и личным пространством.</p>
+                </div>
+                <div id="tab3" class="tab-pane">
+                    <h3>Накопить на море всем миром</h3>
+                    <p>Общая копилка с автопополнением от каждого члена семьи. Видите прогресс в реальном времени, достигайте общих целей без ссор.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Как это работает с ВТБ -->
+    <section id="how-it-works">
+        <div class="container">
+            <h2 class="fade-up" style="text-align: center;">Как это работает с ВТБ</h2>
+            <div class="steps">
+                <div class="step"><div class="step-number">1</div><p>Выпустите виртуальную карту на ребёнка</p></div>
+                <div class="step"><div class="step-number">2</div><p>Установите лимиты в пару кликов</p></div>
+                <div class="step"><div class="step-number">3</div><p>Наблюдайте за тратами в общем виджете</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Образовательный блок Академия -->
+    <section id="academy">
+        <div class="container">
+            <h2 class="fade-up" style="text-align: center;">Финансовая Академия</h2>
+            <div class="pillars">
+                <div class="card fade-up">🎓 Для детей: видео «Как копить на PlayStation 5»</div>
+                <div class="card fade-up">❤️ Для родителей: «Как не ссориться из-за бюджета»</div>
+                <div class="card fade-up">📊 Тесты по финансовой грамотности всей семьёй</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Социальное доказательство + отзывы -->
+    <section>
+        <div class="container">
+            <h2 class="fade-up" style="text-align: center;">Уже 120 000 семей с нами</h2>
+            <div class="reviews">
+                <div class="card fade-up">
+                    <p>«Перестали ссориться из-за мелких трат. Ребёнок сам копит на велик через задания — это гениально»</p>
+                    <p><strong>— Анна, 38 лет, мама двоих детей</strong></p>
+                </div>
+                <div class="card fade-up">
+                    <p>«Вижу общий бюджет на одном экране. Жена тратит ровно столько, сколько мы заложили. Наконец-то спокойствие»</p>
+                    <p><strong>— Дмитрий, 42 года</strong></p>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="container">
+        <p>© 2025 ВТБ Семья — заботливый семейный кошелёк</p>
+        <p style="margin-top: 12px; font-size: 14px;">💚 Ваши финансы под одной крышей</p>
+    </div>
+</footer>
+
+<!-- Модальное окно: Создание семейного кошелька -->
+<div id="createWalletModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeModal('createWalletModal')">&times;</span>
+        <h3>✨ Создать семейный кошелёк</h3>
+        <form id="walletForm">
+            <div class="form-group">
+                <label>Название семьи</label>
+                <input type="text" id="familyName" placeholder="например: Семья Ивановых" required>
+            </div>
+            <div class="form-group">
+                <label>Ваше имя</label>
+                <input type="text" id="userName" placeholder="Как вас зовут?" required>
+            </div>
+            <div class="form-group">
+                <label>Количество членов семьи</label>
+                <select id="familySize">
+                    <option value="2">2 человека</option>
+                    <option value="3">3 человека</option>
+                    <option value="4">4 человека</option>
+                    <option value="5">5+ человек</option>
+                </select>
+            </div>
+            <div class="modal-buttons">
+                <button type="button" class="btn-secondary" onclick="closeModal('createWalletModal')">Отмена</button>
+                <button type="submit" class="btn-primary">Создать кошелёк</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Модальное окно: Приглашение близких -->
+<div id="inviteModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeModal('inviteModal')">&times;</span>
+        <div class="success-icon">🎉</div>
+        <h3>Семейный кошелёк создан!</h3>
+        <p style="text-align: center; margin-bottom: 20px;">Отправьте ссылку близким, чтобы они присоединились</p>
+        <div class="invite-link" id="inviteLink">https://vtb-family.ru/invite/abc123xyz</div>
+        <div class="modal-buttons">
+            <button class="btn-primary" onclick="copyInviteLink()">📋 Скопировать ссылку</button>
+            <button class="btn-secondary" onclick="closeModal('inviteModal')">Закрыть</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Мобильное меню
+    const burger = document.getElementById('burgerBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    burger.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    // Плавная прокрутка (все якоря)
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            const target = document.querySelector(targetId);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (!mobileMenu.classList.contains('hidden')) mobileMenu.classList.add('hidden');
+            }
+        });
+    });
+
+    // Табы
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const panes = document.querySelectorAll('.tab-pane');
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tabId = btn.dataset.tab;
+            tabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            panes.forEach(pane => pane.classList.remove('active-pane'));
+            document.getElementById(tabId).classList.add('active-pane');
+        });
+    });
+
+    // IntersectionObserver анимация появления
+    const fadeElements = document.querySelectorAll('.fade-up');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.2 });
+    fadeElements.forEach(el => observer.observe(el));
+
+    // Функции модальных окон
+    function openModal(modalId) {
+        document.getElementById(modalId).style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+    // Закрытие по клику вне окна
+    window.onclick = function(event) {
+        if (event.target.classList.contains('modal')) {
+            event.target.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    // Обработка формы создания кошелька
+    const walletForm = document.getElementById('walletForm');
+    walletForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const familyName = document.getElementById('familyName').value;
+        const userName = document.getElementById('userName').value;
+        
+        if (!familyName || !userName) {
+            alert('Пожалуйста, заполните все поля');
+            return;
+        }
+        
+        // Генерируем уникальную ссылку-приглашение
+        const inviteCode = Math.random().toString(36).substring(2, 15);
+        const inviteLink = `https://vtb-family.ru/invite/${inviteCode}`;
+        document.getElementById('inviteLink').textContent = inviteLink;
+        
+        // Закрываем первое окно и открываем второе
+        closeModal('createWalletModal');
+        setTimeout(() => {
+            openModal('inviteModal');
+        }, 200);
+        
+        // Сброс формы
+        walletForm.reset();
+    });
+    
+    // Копирование ссылки
+    window.copyInviteLink = function() {
+        const inviteText = document.getElementById('inviteLink').textContent;
+        navigator.clipboard.writeText(inviteText).then(() => {
+            alert('Ссылка скопирована! Отправьте её близким.');
+        }).catch(() => {
+            alert('Не удалось скопировать. Скопируйте вручную: ' + inviteText);
+        });
+    }
+    
+    // Кнопка CTA открывает модальное окно
+    document.getElementById('mainCta').addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal('createWalletModal');
+    });
+    
+    // Также добавим обработку для кнопки "Создать семейный кошелёк" в навигации, если она появится
+    const anyCtaButtons = document.querySelectorAll('.btn-primary');
+    anyCtaButtons.forEach(btn => {
+        if (btn.id !== 'mainCta') {
+            btn.addEventListener('click', (e) => {
+                if (btn.getAttribute('onclick') !== 'copyInviteLink()') {
+                    e.preventDefault();
+                    openModal('createWalletModal');
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

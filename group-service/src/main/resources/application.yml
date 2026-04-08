@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: group-service
+  datasource:
+    url: jdbc:postgresql://postgres:5432/family_wallet
+    username: wallet_user
+    password: wallet_pass123
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+server:
+  port: 8081

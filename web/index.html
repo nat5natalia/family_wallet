@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Семейный кошелёк — ВТБ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== AUTH ===== -->
+<div id="auth-screen" class="screen">
+    <div class="auth-container">
+        <div class="auth-logo">
+            <div class="vtb-badge">ВТБ</div>
+            <h1>Семейный кошелёк</h1>
+            <p>Экосистема управления семейными финансами</p>
+        </div>
+        <div class="auth-tabs">
+            <button class="auth-tab active" data-tab="login">Вход</button>
+            <button class="auth-tab" data-tab="register">Регистрация</button>
+        </div>
+        <form id="login-form" class="auth-form active">
+            <div class="field"><label>Email</label><input type="email" id="login-email" required></div>
+            <div class="field"><label>Пароль</label><input type="password" id="login-password" required></div>
+            <button type="submit" class="btn btn-primary btn-full">Войти</button>
+            <div id="login-error" class="error-msg"></div>
+        </form>
+        <form id="register-form" class="auth-form">
+            <div class="field"><label>Имя</label><input type="text" id="reg-username" required></div>
+            <div class="field"><label>Email</label><input type="email" id="reg-email" required></div>
+            <div class="field"><label>Пароль</label><input type="password" id="reg-password" minlength="6" required></div>
+            <div class="field"><label>Роль</label>
+                <select id="reg-role">
+                    <option value="organizer">Организатор</option>
+                    <option value="spouse">Супруг(а)</option>
+                    <option value="senior">Старшее поколение 55+</option>
+                    <option value="teen">Подросток 14-17</option>
+                    <option value="child">Ребёнок 10-13</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">Зарегистрироваться</button>
+            <div id="register-error" class="error-msg"></div>
+            <div id="register-success" class="success-msg"></div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app-screen" class="screen hidden">
+    <header class="app-header">
+        <div class="header-brand">
+            <span class="vtb-badge-sm">ВТБ</span>
+            <span class="brand-text">Семейный кошелёк</span>
+        </div>
+        <div class="header-actions">
+            <span id="user-display" class="user-name"></span>
+            <span id="user-tier" class="tier-badge">Старт</span>
+            <button id="logout-btn" class="btn btn-sm">Выход</button>
+        </div>
+    </header>
+
+    <div class="app-layout">
+        <nav class="sidebar">
+            <button class="nav-item active" data-section="dashboard">
+                <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+                <span>Обзор</span>
+            </button>
+            <button class="nav-item" data-section="members">
+                <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                <span>Участники</span>
+            </button>
+            <button class="nav-item" data-section="cashback">
+                <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+                <span>Кешбэк</span>
+            </button>
+            <button class="nav-item" data-section="tasks">
+                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z"/></svg>
+                <span>Задачи</span>
+            </button>
+            <button class="nav-item" data-section="subscriptions">
+                <svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM5 15h14v3H5z"/></svg>
+                <span>Подписки</span>
+            </button>
+            <button class="nav-item" data-section="calendar">
+                <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V5c0-1.11-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
+                <span>Календарь</span>
+            </button>
+            <button class="nav-item" data-section="junior">
+                <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-2 .89-2 2v11c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
+                <span>Юниор</span>
+            </button>
+            <button class="nav-item" data-section="profile">
+                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <span>Профиль</span>
+            </button>
+        </nav>
+
+        <main class="content-area">
+
+            <!-- DASHBOARD -->
+            <section id="dashboard-section" class="page active">
+                <div class="page-header">
+                    <div><h2>Обзор семьи</h2><span class="subtitle" id="family-name-dash">—</span></div>
+                </div>
+                <div class="dashboard-grid">
+                    <div class="stat-card"><div class="stat-icon" style="background:#6366f1"><svg viewBox="0 0 24 24" fill="#fff"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div><div class="stat-info"><div class="stat-value" id="d-members">1</div><div class="stat-label">Участников</div></div></div>
+                    <div class="stat-card"><div class="stat-icon" style="background:#22c55e"><svg viewBox="0 0 24 24" fill="#fff"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg></div><div class="stat-info"><div class="stat-value" id="d-cashback">0 ₽</div><div class="stat-label">Кешбэк семьи</div></div></div>
+                    <div class="stat-card"><div class="stat-icon" style="background:#f59e0b"><svg viewBox="0 0 24 24" fill="#fff"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div><div class="stat-info"><div class="stat-value" id="d-tasks">0</div><div class="stat-label">Задач</div></div></div>
+                    <div class="stat-card"><div class="stat-icon" style="background:#ef4444"><svg viewBox="0 0 24 24" fill="#fff"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14z"/></svg></div><div class="stat-info"><div class="stat-value" id="d-subs">0</div><div class="stat-label">Подписок</div></div></div>
+                </div>
+
+                <!-- Tier -->
+                <div class="tier-card">
+                    <h3>Ваш тариф: <span id="tier-name">Старт</span></h3>
+                    <p id="tier-desc" class="tier-desc-text">Бесплатный тариф. До 3 участников, базовый кешбэк, 1 общая цель.</p>
+                    <div class="tier-features">
+                        <span class="tier-feature">До 3 участников</span>
+                        <span class="tier-feature">Кешбэк 5% супермаркеты</span>
+                        <span class="tier-feature">1 цель</span>
+                        <span class="tier-feature">Базовый календарь</span>
+                    </div>
+                    <div class="tier-progress">
+                        <span id="tier-next-text">Пригласите ещё 2 участников для тарифа «Семья»</span>
+                        <div class="progress-bar"><div class="progress-fill" id="tier-fill" style="width:33%"></div></div>
+                    </div>
+                </div>
+
+                <!-- Quick actions -->
+                <div class="quick-actions">
+                    <h3>Быстрые действия</h3>
+                    <div class="actions-grid">
+                        <button class="action-btn" onclick="navigateTo('profile')">
+                            <svg viewBox="0 0 24 24"><path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                            Пригласить
+                        </button>
+                        <button class="action-btn" onclick="openGoalModal()">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                            Новая цель
+                        </button>
+                        <button class="action-btn" onclick="openTaskModal()">
+                            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z"/></svg>
+                            Создать задачу
+                        </button>
+                        <button class="action-btn" onclick="navigateTo('calendar')">
+                            <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V5c0-1.11-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
+                            Календарь
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MEMBERS -->
+            <section id="members-section" class="page">
+                <div class="page-header">
+                    <div><h2>Участники семьи</h2><span class="subtitle" id="members-family-name">—</span></div>
+                    <button class="btn btn-primary" onclick="navigateTo('invitations')">+ Пригласить</button>
+                </div>
+                <div id="members-list" class="members-grid"></div>
+            </section>
+
+            <!-- CASHBACK -->
+            <section id="cashback-section" class="page">
+                <div class="page-header"><div><h2>Кешбэк группы</h2><span class="subtitle">Координируйте траты</span></div></div>
+                <div class="cashback-dashboard">
+                    <div class="cashback-main">
+                        <div class="cashback-item"><div class="cashback-amount" id="cb-group">0 ₽</div><div class="cashback-label">Суммарный кешбэк семьи</div></div>
+                        <div class="cashback-item"><div class="cashback-amount" id="cb-personal">0 ₽</div><div class="cashback-label">Ваш кешбэк</div></div>
+                    </div>
+                </div>
+                <h3>Категории группы</h3>
+                <div id="cb-cats" class="categories-grid"></div>
+                <div class="recommendation-banner" id="cb-rec">
+                    <svg viewBox="0 0 24 24"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/></svg>
+                    <div><strong>Рекомендация:</strong> <span id="cb-rec-text">Никто не выбрал «Кафе» — возьмите и получите 5%!</span></div>
+                </div>
+            </section>
+
+            <!-- TASKS -->
+            <section id="tasks-section" class="page">
+                <div class="page-header">
+                    <h2>Финансовые задачи</h2>
+                    <div style="display:flex;gap:8px">
+                        <button class="btn btn-sm" onclick="openGoalModal()">+ Цель</button>
+                        <button class="btn btn-sm" onclick="openTaskModal()">+ Задача</button>
+                    </div>
+                </div>
+                <div class="task-filters">
+                    <button class="filter-btn active" data-filter="all">Все</button>
+                    <button class="filter-btn" data-filter="goal">Цели</button>
+                    <button class="filter-btn" data-filter="payment">Платежи</button>
+                    <button class="filter-btn" data-filter="ai">AI</button>
+                </div>
+                <div id="tasks-list" class="tasks-list"></div>
+                <div id="no-tasks" class="empty-state" style="display:none"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg><p>Нет задач</p></div>
+            </section>
+
+            <!-- SUBSCRIPTIONS -->
+            <section id="subscriptions-section" class="page">
+                <div class="page-header"><div><h2>Трекер подписок</h2><span class="subtitle">Контроль регулярных расходов</span></div></div>
+                <div class="subs-summary">
+                    <div class="subs-total"><div class="subs-amount" id="sub-monthly">0 ₽</div><div class="subs-label">в месяц</div></div>
+                    <div class="subs-yearly"><div class="subs-amount" id="sub-yearly">0 ₽</div><div class="subs-label">в год</div></div>
+                </div>
+                <div id="subs-dups" class="duplicates-alert" style="display:none"><svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg><div><strong>Найдены дубли!</strong> <span id="dups-text"></span></div></div>
+                <div id="subs-list" class="subs-grid"></div>
+            </section>
+
+            <!-- CALENDAR -->
+            <section id="calendar-section" class="page">
+                <div class="page-header"><h2>Финансовый календарь</h2></div>
+                <div class="calendar-controls">
+                    <button class="cal-nav" id="cal-prev">‹</button>
+                    <h3 id="cal-label"></h3>
+                    <button class="cal-nav" id="cal-next">›</button>
+                </div>
+                <div id="cal-grid" class="calendar-grid"></div>
+                <div class="upcoming-list"><h3>Ближайшие платежи</h3><div id="upcoming"></div></div>
+            </section>
+
+            <!-- JUNIOR -->
+            <section id="junior-section" class="page">
+                <div class="page-header"><div><h2>ВТБ Юниор</h2><span class="subtitle">Финансовый помощник для детей</span></div></div>
+                <div class="junior-tabs">
+                    <button class="junior-tab active" data-jtab="jt">Задачи</button>
+                    <button class="junior-tab" data-jtab="jq">Квесты</button>
+                    <button class="junior-tab" data-jtab="jl">Уровни</button>
+                    <button class="junior-tab" data-jtab="jr">Запросы денег</button>
+                </div>
+                <div id="jt-view" class="jtab-content active">
+                    <button class="btn btn-primary btn-sm" onclick="openJTaskModal()">+ Задача для ребёнка</button>
+                    <div id="jt-list" class="jtasks-list" style="margin-top:12px"></div>
+                </div>
+                <div id="jq-view" class="jtab-content"><div id="jq-list" class="jquests-grid"></div></div>
+                <div id="jl-view" class="jtab-content"><div id="jl-list" class="levels-display"></div></div>
+                <div id="jr-view" class="jtab-content"><div id="jr-list" class="jrequests-list"></div></div>
+            </section>
+
+            <!-- PROFILE -->
+            <section id="profile-section" class="page">
+                <div class="page-header"><h2>Профиль</h2></div>
+                <div class="profile-card">
+                    <div class="profile-avatar"><span id="prof-init"></span></div>
+                    <div class="profile-info">
+                        <div class="profile-row"><span class="profile-label">Имя:</span><span id="prof-name"></span></div>
+                        <div class="profile-row"><span class="profile-label">Email:</span><span id="prof-email"></span></div>
+                        <div class="profile-row"><span class="profile-label">Роль:</span><span id="prof-role"></span></div>
+                        <div class="profile-row"><span class="profile-label">Тариф:</span><span id="prof-tier"></span></div>
+                        <div class="profile-row"><span class="profile-label">Семья:</span><span id="prof-family"></span></div>
+                    </div>
+                </div>
+
+                <!-- Приглашения внутри профиля -->
+                <div class="profile-invitations" style="margin-top:32px">
+                    <div class="page-header" style="margin-top:0">
+                        <h3>Приглашения</h3>
+                        <button class="btn btn-sm" id="refresh-inv">↻ Обновить</button>
+                    </div>
+                    <div id="inv-list" class="waiters-grid"></div>
+                    <div id="no-inv" class="empty-state" style="display:none"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg><p>Нет приглашений</p></div>
+                </div>
+            </section>
+
+            <!-- NO FAMILY — заглушка -->
+            <section id="no-family-section" class="page">
+                <div class="no-family-page">
+                    <div class="no-family-icon">
+                        <svg viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="35" cy="40" r="8" fill="currentColor" opacity="0.8"/>
+                            <circle cx="65" cy="40" r="8" fill="currentColor" opacity="0.8"/>
+                            <circle cx="50" cy="65" r="8" fill="currentColor" opacity="0.8"/>
+                            <path d="M35 40 L65 40 M50 40 L50 65" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                    </div>
+                    <h2>Добро пожаловать!</h2>
+                    <p class="no-family-text">Чтобы получить доступ ко всем функциям, примите приглашение в семью.</p>
+                    <div class="no-family-actions">
+                        <button class="btn btn-primary" onclick="navigateTo('profile')">
+                            <svg viewBox="0 0 24 24" style="width:20px;height:20px;vertical-align:middle;margin-right:6px"><path fill="currentColor" d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                            Посмотреть приглашения
+                        </button>
+                    </div>
+                    <div class="no-family-features">
+                        <h3>Что будет доступно после подключения:</h3>
+                        <div class="features-list">
+                            <div class="feature-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg><div><b>Общий кешбэк</b><span>Координируйте категории для максимума</span></div></div>
+                            <div class="feature-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z"/></svg><div><b>Финансовые задачи</b><span>Общие цели и бытовые платежи</span></div></div>
+                            <div class="feature-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM5 15h14v3H5z"/></svg><div><b>Трекер подписок</b><span>Находите дубли и экономьте</span></div></div>
+                            <div class="feature-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V5c0-1.11-.9-2-2-2zm0 16H5V8h14v11z"/></svg><div><b>Финансовый календарь</b><span>Планируйте платежи</span></div></div>
+                            <div class="feature-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-2 .89-2 2v11c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg><div><b>ВТБ Юниор</b><span>Задачи и квесты для детей</span></div></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+</div>
+
+<!-- ===== MODALS ===== -->
+<!-- Goal Modal -->
+<div id="goal-modal" class="modal hidden">
+    <div class="modal-content">
+        <h3>Новая финансовая цель</h3>
+        <form id="goal-form">
+            <div class="field"><label>Название</label><input type="text" id="g-name" placeholder="Отпуск в Сочи" required></div>
+            <div class="field"><label>Сумма (₽)</label><input type="number" id="g-amount" placeholder="150000" required></div>
+            <div class="field"><label>Срок</label><input type="date" id="g-deadline"></div>
+            <div class="field"><label>Описание</label><input type="text" id="g-desc" placeholder="Накопить на семейный отпуск"></div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-sm" onclick="closeModal('goal-modal')">Отмена</button>
+                <button type="submit" class="btn btn-primary btn-sm">Создать</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Task Modal -->
+<div id="task-modal" class="modal hidden">
+    <div class="modal-content">
+        <h3>Новая задача</h3>
+        <form id="task-form">
+            <div class="field"><label>Название</label><input type="text" id="t-name" placeholder="Оплатить ЖКХ" required></div>
+            <div class="field"><label>Сумма (₽)</label><input type="number" id="t-amount" placeholder="8500"></div>
+            <div class="field"><label>Срок</label><input type="date" id="t-deadline"></div>
+            <div class="field"><label>Описание</label><input type="text" id="t-desc" placeholder="Квартплата + электричество"></div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-sm" onclick="closeModal('task-modal')">Отмена</button>
+                <button type="submit" class="btn btn-primary btn-sm">Создать</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Junior Task Modal -->
+<div id="jtask-modal" class="modal hidden">
+    <div class="modal-content">
+        <h3>Задача для ребёнка</h3>
+        <form id="jtask-form">
+            <div class="field"><label>Название</label><input type="text" id="jt-name" placeholder="Убраться в комнате" required></div>
+            <div class="field"><label>Вознаграждение (₽)</label><input type="number" id="jt-reward" placeholder="50" required></div>
+            <div class="field"><label>Срок</label><input type="date" id="jt-deadline"></div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-sm" onclick="closeModal('jtask-modal')">Отмена</button>
+                <button type="submit" class="btn btn-primary btn-sm">Создать</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="toast" class="toast"></div>
+<div id="loading" class="loading-overlay hidden"><div class="spinner"></div></div>
+
+<script src="app.js"></script>
+</body>
+</html>
