@@ -122,3 +122,10 @@ async def get_me(current_user=Depends(get_current_user)):
 @router.post("/logout")
 async def logout(current_user=Depends(get_current_user)):
     return {"message": "Выход выполнен"}
+
+@router.get("/users/by-email/{email}")
+async def get_user_by_email_endpoint(email: str, db: AsyncSession = Depends(get_db)):
+    user = await get_user_by_email(db, email)
+    if not user:
+        raise HTTPException(status_code=404, detail="Пользователь не найден")
+    return {"id": user.id, "username": user.username, "email": user.email}

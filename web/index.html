@@ -154,7 +154,7 @@
             <section id="members-section" class="page">
                 <div class="page-header">
                     <div><h2>Участники семьи</h2><span class="subtitle" id="members-family-name">—</span></div>
-                    <button class="btn btn-primary" onclick="navigateTo('invitations')">+ Пригласить</button>
+                    <button class="btn btn-primary" onclick="focusInviteForm()">+ Пригласить</button>
                 </div>
                 <div id="members-list" class="members-grid"></div>
             </section>
@@ -249,7 +249,17 @@
                         <div class="profile-row"><span class="profile-label">Семья:</span><span id="prof-family"></span></div>
                     </div>
                 </div>
-
+                <!-- Форма приглашения -->
+<div style="margin-top: 32px; margin-bottom: 32px;">
+    <h3>Пригласить нового участника</h3>
+    <form id="invite-form" style="display: flex; gap: 8px; margin-top: 16px; max-width: 500px;">
+        <input type="email" id="invite-email" placeholder="email@example.com" required
+               style="flex:1; padding: 12px; border: 2px solid var(--border); border-radius: 8px;">
+        <button type="submit" class="btn btn-primary" style="white-space: nowrap;">Отправить приглашение</button>
+    </form>
+    <div id="invite-error" class="error-msg"></div>
+    <div id="invite-success" class="success-msg"></div>
+</div>
                 <!-- Приглашения внутри профиля -->
                 <div class="profile-invitations" style="margin-top:32px">
                     <div class="page-header" style="margin-top:0">

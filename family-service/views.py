@@ -9,7 +9,8 @@ from schemas import (
     FamilyInfo, TaskCreate, TaskResponse, SubscriptionResponse,
     CalendarEventCreate, CalendarEventResponse,
     JuniorTaskCreate, JuniorTaskResponse, JuniorQuestResponse,
-    JuniorMoneyRequestResponse
+    JuniorMoneyRequestResponse,
+    FamilyMemberResponse   # <-- вот эта строка
 )
 from crud import (
     get_waiters_by_email, create_waiter, get_waiter_by_id,
@@ -249,3 +250,40 @@ async def list_quests(current_user=Depends(get_current_user), db: AsyncSession =
 async def list_junior_requests(current_user=Depends(get_current_user), db: AsyncSession = Depends(get_db)):
     # Demo - empty list
     return []
+
+@router.get("/members", response_model=list[FamilyMemberResponse])
+async def list_family_members(
+    current_user=Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    family = await get_or_create_family_for_user(db, current_user["user_id"], current_user.get("username", ""))
+    # Получаем всех, кто принял приглашение в эту семью
+    waiters_result = await db.execute(
+        select(FamilyWaiter)
+        .where(FamilyWaiter.family_id == family.id, FamilyWaiter.status == WaiterStatus.accepted)
+    )
+    accepted_waiters = waiters_result.scalars().all()
+
+    members = []
+    # Владелец семьи
+    owner_name = await get_username_by_id(family.owner_id)
+    members.append(FamilyMemberResponse(
+        id=family.owner_id,
+        name=owner_name or f"User #{family.owner_id}",
+        email=current_user["email"],  # владелец – текущий пользователь, но email надо получить из auth?
+        role="organizer",
+        status="member"
+    ))
+
+    # Принявшие приглашение
+    for w in accepted_waiters:
+        # Получить информацию о пользователе из auth-service по email
+        # Для простоты пока используем email как имя
+        members.append(FamilyMemberResponse(
+            id=w.id,  # временно, лучше хранить user_id приглашённого
+            name=w.email.split('@')[0],
+            email=w.email,
+            role="member",
+            status="member"
+        ))
+    return members

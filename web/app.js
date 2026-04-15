@@ -1,8 +1,11 @@
 const AUTH = { register:'/auth/register', login:'/auth/login', me:'/auth/me' };
 const FAM = {
-    waiters:'/family/family-waiters.json', createWaiter:'/family/family-waiters',
-    accept:id=>`/family/family-waiters/${id}/accept`, reject:id=>`/family/family-waiters/${id}/reject`,
-    myFamily:'/family/my'
+    waiters:'/family/family-waiters.json',
+    createWaiter:'/family/family-waiters',
+    accept:id=>`/family/family-waiters/${id}/accept`,
+    reject:id=>`/family/family-waiters/${id}/reject`,
+    myFamily:'/family/my',
+    members: '/family/members'   // ← новый
 };
 
 let token = localStorage.getItem('authToken');
@@ -89,10 +92,26 @@ function showApp() {
     applyNavVisibility();
     navigateTo(hasFamily ? 'dashboard' : 'no-family');
 }
-
+async function loadFamilyMembers() {
+    try {
+        const members = await api(FAM.members);
+        familyMembers = members;
+    } catch (e) {
+        console.warn('Не удалось загрузить участников', e);
+        // fallback: хотя бы текущий пользователь
+        familyMembers = [{
+            id: user.id,
+            name: user.username,
+            email: user.email,
+            role: user.role || 'organizer',
+            status: 'member'
+        }];
+    }
+    updateFamilyMembersCount();
+    refreshUI();
+}
 // ===== CHECK FAMILY STATUS =====
 async function checkFamilyStatus() {
-    // Проверяем есть ли принятые приглашения
     try {
         const data = await api(FAM.waiters);
         const accepted = (data.waiters||[]).filter(w => w.status === 'accepted');
@@ -101,22 +120,12 @@ async function checkFamilyStatus() {
         hasFamily = false;
     }
 
-    if(hasFamily) {
-        // Загрузить членов семьи
-        familyMembers = [];
-        if(user) {
-            familyMembers.push({id:user.id||1, name:user.username, email:user.email, role:user.role||'organizer', status:'member'});
-        }
+    if (hasFamily) {
+        await loadFamilyMembers();  // загружаем реальных участников
         try {
             const fam = await api(FAM.myFamily);
-            if(fam) {
+            if (fam) {
                 $('#family-name-dash').textContent = fam.name;
-                if(fam.members_count && fam.members_count > 1) {
-                    // В реальности здесь загружались бы участники из API
-                    for(let i=2; i<=fam.members_count; i++) {
-                        familyMembers.push({id:i, name:`Участник ${i}`, email:`member${i}@test.com`, role:'member', status:'member'});
-                    }
-                }
             }
         } catch {}
     }
@@ -239,13 +248,19 @@ function loadDashboard() {
 function loadMembers() {
     if(!hasFamily) { navigateTo('no-family'); return; }
     const list = $('#members-list');
-    if(!familyMembers.length) { list.innerHTML='<p style="color:var(--text-muted)">Пока нет участников</p>'; return; }
+    if(!familyMembers.length) {
+        list.innerHTML='<p style="color:var(--text-muted)">Пока нет участников</p>';
+        return;
+    }
     list.innerHTML = familyMembers.map((m,i) => `
         <div class="member-card">
-            <div class="member-avatar" style="background:${avatarColors[i%avatarColors.length]}">${m.name[0].toUpperCase()}</div>
+            <div class="member-avatar" style="background:${avatarColors[i%avatarColors.length]}">
+                ${m.name[0].toUpperCase()}
+            </div>
             <div class="member-name">${esc(m.name)}</div>
             <div class="member-email">${esc(m.email)}</div>
-            <span class="member-role">${roleNames[m.role]||m.role}</span>
+            <span class="member-role">${roleNames[m.role] || m.role}</span>
+            ${m.status === 'pending' ? '<div class="member-status">Ожидает</div>' : ''}
         </div>
     `).join('');
 }
@@ -368,13 +383,10 @@ async function doAccept(id) {
     try {
         await api(FAM.accept(id), {method:'POST'});
         toast('Приглашение принято!');
-        // Ключевой момент: разблокируем доступ
         hasFamily = true;
-        familyMembers.push({id:Date.now(),name:'Новый участник',email:'—',role:'member',status:'member'});
-        updateFamilyMembersCount();
+        await loadFamilyMembers();      // загружаем реальный список
         applyNavVisibility();
         loadInvitations();
-        // Переходим на дашборд — теперь всё доступно
         navigateTo('dashboard');
     } catch(e) { toast(e.message,'error'); }
 }
@@ -394,14 +406,20 @@ async function createWaiter(email) {
         const s=$('#invite-success'), e=$('#invite-error');
         if(s) s.textContent='Приглашение отправлено!'; if(e) e.textContent='';
         toast('Приглашение создано');
-        familyMembers.push({id:Date.now(),name:email.split('@')[0],email,role:'member',status:'pending'});
-        updateFamilyMembersCount();
+        // НЕ добавляем участника в familyMembers – он появится только после принятия
         const f=$('#invite-form'); if(f) f.reset();
     } catch(err) {
         const s=$('#invite-success'), e=$('#invite-error');
         if(e) e.textContent=err.message; if(s) s.textContent='';
         toast('Ошибка: '+err.message,'error');
     } finally { hideLoading(); }
+}
+function focusInviteForm() {
+    navigateTo('profile');
+    setTimeout(() => {
+        const input = $('#invite-email');
+        if (input) input.focus();
+    }, 100);
 }
 
 // ===== INIT =====

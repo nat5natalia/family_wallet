@@ -25,3 +25,14 @@ async def get_username_by_id(user_id: int) -> Optional[str]:
         pass
 
     return f"Пользователь #{user_id}"
+async def get_user_by_email(email: str) -> Optional[dict]:
+    try:
+        async with httpx.AsyncClient(timeout=5.0) as client:
+            response = await client.get(
+                f"{settings.AUTH_SERVICE_URL}/auth/users/by-email/{email}"
+            )
+            if response.status_code == 200:
+                return response.json()
+    except Exception:
+        pass
+    return None

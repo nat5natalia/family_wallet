@@ -170,3 +170,17 @@ class JuniorMoneyRequestResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class FamilyMemberResponse(BaseModel):
+    id: int
+    name: str
+    email: str
+    role: str
+    status: str  # member, pending и т.д.
+
+class FamilyMemberResponse(BaseModel):
+    id: int
+    name: str
+    email: str
+    role: str
+    status: str
