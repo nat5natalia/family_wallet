@@ -110,11 +110,47 @@ async def delete_waiter_ep(wid: int, current_user=Depends(get_current_user), db:
 # ===================== FAMILY =====================
 
 @router.get("/my", response_model=FamilyInfo)
-async def get_my_family(current_user=Depends(get_current_user), db: AsyncSession = Depends(get_db)):
-    family = await get_or_create_family_for_user(db, current_user["user_id"], current_user.get("username", ""))
+async def get_my_family(
+    current_user=Depends(get_current_user), 
+    db: AsyncSession = Depends(get_db)
+):
+    from sqlalchemy import select
+    from models import Family, FamilyWaiter, WaiterStatus
+    
+    # Сначала ищем семью, где пользователь - владелец
+    family_result = await db.execute(
+        select(Family).where(Family.owner_id == current_user["user_id"])
+    )
+    family = family_result.scalar_one_or_none()
+    
+    # Если не владелец - ищем через принятые приглашения
+    if not family:
+        waiters_result = await db.execute(
+            select(FamilyWaiter).where(
+                FamilyWaiter.email == current_user["email"],
+                FamilyWaiter.status == WaiterStatus.accepted
+            )
+        )
+        accepted_waiter = waiters_result.scalar_one_or_none()
+        
+        if accepted_waiter:
+            family_result = await db.execute(
+                select(Family).where(Family.id == accepted_waiter.family_id)
+            )
+            family = family_result.scalar_one_or_none()
+    
+    if not family:
+        raise HTTPException(404, "Семья не найдена")
+    
     owner_name = await get_username_by_id(family.owner_id)
-    return FamilyInfo(id=family.id, name=family.name, owner_id=family.owner_id,
-                      owner_name=owner_name, created_at=family.created_at)
+    
+    return FamilyInfo(
+        id=family.id, 
+        name=family.name, 
+        owner_id=family.owner_id,
+        owner_name=owner_name, 
+        created_at=family.created_at
+    )
 
 
 # ===================== TASKS =====================
@@ -256,34 +292,126 @@ async def list_family_members(
     current_user=Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
-    family = await get_or_create_family_for_user(db, current_user["user_id"], current_user.get("username", ""))
-    # Получаем всех, кто принял приглашение в эту семью
+    from sqlalchemy import select
+    from models import Family, FamilyWaiter, WaiterStatus
+    
+    members = []
+    family_id = None
+    
+    # 1. Находим семью, где пользователь - владелец
+    family_result = await db.execute(
+        select(Family).where(Family.owner_id == current_user["user_id"])
+    )
+    family = family_result.scalar_one_or_none()
+    
+    if family:
+        family_id = family.id
+        # Добавляем владельца
+        members.append(FamilyMemberResponse(
+            id=family.owner_id,
+            name=current_user.get("username", f"User #{family.owner_id}"),
+            email=current_user["email"],
+            role="organizer",
+            status="member"
+        ))
+    else:
+        # 2. Ищем через принятые приглашения
+        waiters_result = await db.execute(
+            select(FamilyWaiter).where(
+                FamilyWaiter.email == current_user["email"],
+                FamilyWaiter.status == WaiterStatus.accepted
+            )
+        )
+        accepted_waiter = waiters_result.scalar_one_or_none()
+        
+        if accepted_waiter:
+            family_id = accepted_waiter.family_id
+            # Добавляем текущего пользователя как участника
+            members.append(FamilyMemberResponse(
+                id=current_user["user_id"],
+                name=current_user.get("username", "Участник"),
+                email=current_user["email"],
+                role="member",
+                status="member"
+            ))
+    
+    if not family_id:
+        return []
+    
+    # 3. Добавляем всех, кто принял приглашение в эту семью
     waiters_result = await db.execute(
-        select(FamilyWaiter)
-        .where(FamilyWaiter.family_id == family.id, FamilyWaiter.status == WaiterStatus.accepted)
+        select(FamilyWaiter).where(
+            FamilyWaiter.family_id == family_id,
+            FamilyWaiter.status == WaiterStatus.accepted,
+            FamilyWaiter.email != current_user["email"]  # исключаем текущего пользователя
+        )
     )
     accepted_waiters = waiters_result.scalars().all()
-
-    members = []
-    # Владелец семьи
-    owner_name = await get_username_by_id(family.owner_id)
-    members.append(FamilyMemberResponse(
-        id=family.owner_id,
-        name=owner_name or f"User #{family.owner_id}",
-        email=current_user["email"],  # владелец – текущий пользователь, но email надо получить из auth?
-        role="organizer",
-        status="member"
-    ))
-
-    # Принявшие приглашение
+    
     for w in accepted_waiters:
-        # Получить информацию о пользователе из auth-service по email
-        # Для простоты пока используем email как имя
         members.append(FamilyMemberResponse(
-            id=w.id,  # временно, лучше хранить user_id приглашённого
+            id=w.id,
             name=w.email.split('@')[0],
             email=w.email,
             role="member",
             status="member"
         ))
+    
     return members
+
+@router.get("/has-family")
+async def has_family(
+    current_user=Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    from sqlalchemy import select
+    from models import Family, FamilyWaiter, WaiterStatus
+    
+    # Проверяем, является ли пользователь владельцем семьи
+    family_result = await db.execute(
+        select(Family).where(Family.owner_id == current_user["user_id"])
+    )
+    family = family_result.scalar_one_or_none()
+    
+    if family:
+        return {"has_family": True}
+    
+    # Проверяем, есть ли принятые приглашения
+    waiters_result = await db.execute(
+        select(FamilyWaiter).where(
+            FamilyWaiter.email == current_user["email"],
+            FamilyWaiter.status == WaiterStatus.accepted
+        )
+    )
+    accepted_waiter = waiters_result.scalar_one_or_none()
+    
+    if accepted_waiter:
+        return {"has_family": True}
+    
+    return {"has_family": False}
+    """Проверить, есть ли у пользователя семья"""
+    from sqlalchemy import select
+    from models import Family, FamilyWaiter, WaiterStatus
+    
+    # Проверяем, является ли пользователь владельцем семьи
+    family_result = await db.execute(
+        select(Family).where(Family.owner_id == current_user["user_id"])
+    )
+    family = family_result.scalar_one_or_none()
+    
+    if family:
+        return {"has_family": True}
+    
+    # Проверяем, есть ли принятые приглашения
+    waiters_result = await db.execute(
+        select(FamilyWaiter).where(
+            FamilyWaiter.email == current_user["email"],
+            FamilyWaiter.status == WaiterStatus.accepted
+        )
+    )
+    accepted_waiter = waiters_result.scalar_one_or_none()
+    
+    if accepted_waiter:
+        return {"has_family": True}
+    
+    return {"has_family": False}

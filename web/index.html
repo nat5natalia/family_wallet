@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Семейный кошелёк — ВТБ</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
@@ -12,7 +14,7 @@
 <div id="auth-screen" class="screen">
     <div class="auth-container">
         <div class="auth-logo">
-            <div class="vtb-badge">ВТБ</div>
+            <img class="vtb-logo-auth" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXcAAACGCAMAAAARpzrEAAAAulBMVEX///8KKXMAn98AGW2RmbYAmt0AHG4AJXEABWgAE2uttMrX2uUAEGp8hqrb3+gAoeC83vOs2fK3vdEoPHwAInA4SoQAAGccpOBOW40ADGrm6fBIWY8AmN0AH28AG24AEmuJkbHz9PiY0O/IzNtfbJlkcZzM0N7g8vpwe6MVMXiepb8wRIHj5e1qvOh4wurW7Pk7reNVteai1PCmq8HX7vkfOHwAAFzr9vx0wOlgbpo0R4J3gaa0us5LWo5LkVr2AAAI/0lEQVR4nO2dbWPSOhSAqQXSUrYplLjCyovMjTeduot6df7/v3U73EbBk+ak6UmCt89n1jTPSnqSnBwaDREfXpHQ+ihssSbjW4vG+9Wd7Z65zRsi729td8xxPtF4b72z3TG3ub0i0f6q9c12z9zmHdEw88l2xxznLY321hvbHXObO6phxnbHHOcj0Vv1g+2OOQ7R6N6qg/dCXhN5v7DdMcf5TKO9XiMohmyN4NZ2z9zmS71GYIVPNNpbX2x3zG3qNQI7fLxqUXD12XbHHOc1EfVbtaampqampqampqbmb+CudUFC4QZfNG3KWa1W953efDMr7gDmUqpMf196WMW1O/BtW9ng63AfQxiG3YSHy9G0NxRe6yvqUkoko6fHI9C/Fn+Ab5vEeub9daH30FOAxeMuXzc38LW4yqVwdB+evetfK4Hv2s4Gn5r3Hczno54h78GsMu/pNWzAzgZfCe8ZccKAwbJ67y+uKvCegM8K2QZf6x8C79lDn/Rv6L0/DzNVeA9hAZY2+Mp6z8zzn+Tew+cISt97+h4WQJUELNngK+89s7I+jG0q974fkvW9J3Ow/1QbfFeSDT4d716cnpN63w/J+t7bcP+pkoBlG3xa3rOxJi++cu/By6W1vacLuP801iXBu7Z3j7VzQ03V3nNDsrZ3wTBzRxXNSLTrevfiLZ33XOSn7V0QzXy3lQSs693z91FN5c/7/jZ1vbePY68nrJ3g0/bu8Zc4vmLv+SFZ13sADzP2koD1vcdrIu/5IVnTO/Pg3lOtEchP8Ol794LnYbhq77nb1PQuGGa+0WSJtRBJwLB3doCkU/GAxPtB5KfpPfhjTWPHLVWamFQ77H257u/ZLn3OgzAW9+o5iP8aFOFDf8rEn/+aH5JB7wV/fAjnchGGgby3p8efGkb3l0Fb5N1v/v5UdF7EChDPtuLPR/kbgLyz9aawwRzivRpbgN7PoE8Of3LBiMMG0OeP6XWBv+wjbxP0jmrWUfDes84vBYNNItl43VF7z6PivTHbwk+8YBJ+SO09j5L3xhAOWcJ7REu19zxq3hsrMOws+IM9tfc8it5nY8i7aC/ngNp7HkXvjUUKeI8vES255v3zxVsKLnBVflS9P0wg7yNES455JzsojDvBp+r9HJo4nqJ3y1V+VL0PAXsnOc5YrvKj6n0GLbOc4HuVrMoP8qBwJd7HpxdH2q7yo+wdCuBPcN5EYh2RR/CM8vieAN4Fy9uHOOWdaoMPXUxM1fsc8j45uXUx61V+VL1PgQkrKox0yjtZ8F6cBJxD1XsfWJEMV5iWXPJOlQSML9Gp6H0OTZs4ajvHJe9UVX7wlYAVva+Bx110kOIIh7zfUr1V8VV+1Lw3odkqj0QfP8Ah77aSgHMoee9A2x7Ix90l7w5UAlbx3gR3m3Cju0veXagEjPd+M4BCd49j5qqPVO99Hf3B+WY2k04mvhMVE1OpBAx5TxezYZ7NJupN+xxMJggxS2I7KvcO5S3xDH85uJ52Cl46b4hQKSYG5ovFySFB0B3DmQQ+asq0o3rvIhhLx2GQDJq4F74V9PJSFbQb9P5E7PPlVHC03Dpa3hNkKLPDuPfH6/vBpZsPvYZ3xjHL7i/Y8J6R8mv3siN1vLdD+OC5CEveM/NdbMhlkLLeUy44mCjEmnfPCzD7v2Yp6T1enMuvfYhF795469pYU857NmVRbsmmdy9OHQtsSj7vjPcFVaOEWPXuxbFbT3zp9ypLtifyXv1NvMRsRhpDK44cqXx5LXv32gpzPHq05k1p0MS3ZNu7lyjcLDma51eTEfrba927x5VjMDp0zw2nHrYz9r3HDiXMa5/XZgEypLTv3eNqkQAl+ufkWWJpfxVYf0+SsF1wvBzdHD0V1CdgIWqMJ9hvOj/ebrqZr87WiS9ULyjLYQHQOzt+ipJu0XOUunVueNhk4CksD5mobwTIOxsdPUU38172HPGJSH0XE6GZ3NdeiEpUYDfhyYG8C56KWWcN7mw/dgcxgTKaTwBmnHjYlEIDKHh//LSgRAEmh8ZsHkcPFo9LoTWAmvfGxoPFI3LGDOfPgKltyFIKBlD03tjAwUJbvgtiOm9pAOadoEopGEDVe2MOf4EFxdVzmPZ+A96o78gAr+y9cQ2d2BZV+c5hPE8Pyl320n+RLRKj7h2esosKNO4x7h2sYeFKUQN17/DAKaoUuMe493NwoImRLRJTwjtUKCwbaGQzEuPeZ+CAyN0IaEp4vwEHGulZSvN52OAAf7reZ+D3dyLb5zbvfQQNiI6sFJTwDtfnlAZo5r1fgt7dSOgo4x2ckIynkpZq73nKeAfXCqSBpCvjzOl6B+MZ0Q85vODKe/UvG9/d8z4DC+uebjwDF5F0b5yJwPsMTtY7WJLDwfcqvE7AkC0SU8L7Gfj9le7kGPf+AxreXcmhKeEd3vroCn7d9AXT3uFhBlUKzQDq3jvwRo40fcm0dzCKdGaDVd274HcnpBtohr134D14bHYbNcre38M/e+DaOnAkSH0Q/H6WcVS9NwX9kYbvZr1HYfnEByMoep+K8kOlr1Wj3u+7ghQr+W0aQsl7NICqMu+QTwPNee/9EOVXeV1ke+Sgvc+i1QAuyVH4r9pTvfcfw2M2UW913U6EqZzyXWBTwL/f9Gt0yKDPwsAv+AkneToBRR52ckwQdH1wd+8Jd058wHnY8RGyHy2TRzNOnDtwJYmjUUn+e8YEMRtxwLsja8CPVOKdYZIj7HsPpxqiKqYS7xwTnVn3zrbydoxRhfcUdYrCundknUszVHG+ybdzvkkRdOE/I1TgnWOqv1v3nigVhyKngt/XRk697XpPVMsUEaPt3V7dTqW7dGai+oSmdxagj0Bb9M64I7sdezTrRzJ8jGDP+7jtyOGaHDreY6Vvry3vsXIFOhOU9x7zgVJAbMd7ykcuhe0vlK0v5vOR4pfXgvc4TK5xQa5xSnhnacjXTcfrGLLUT/ivlTsLYUd0eBvJeOz74SQJustFp0x3HoCW/CXyjyPMbY7Hu3sMkyCZbN83525k5MHMf54hmU6bq1VnvinbmxuopSnyj4cL3C1m93jfmUfOPub/Z/4D15QkK4SWrkgAAAAASUVORK5CYII=" alt="ВТБ">
             <h1>Семейный кошелёк</h1>
             <p>Экосистема управления семейными финансами</p>
         </div>
@@ -30,15 +32,7 @@
             <div class="field"><label>Имя</label><input type="text" id="reg-username" required></div>
             <div class="field"><label>Email</label><input type="email" id="reg-email" required></div>
             <div class="field"><label>Пароль</label><input type="password" id="reg-password" minlength="6" required></div>
-            <div class="field"><label>Роль</label>
-                <select id="reg-role">
-                    <option value="organizer">Организатор</option>
-                    <option value="spouse">Супруг(а)</option>
-                    <option value="senior">Старшее поколение 55+</option>
-                    <option value="teen">Подросток 14-17</option>
-                    <option value="child">Ребёнок 10-13</option>
-                </select>
-            </div>
+                <input type="hidden" id="reg-role" value="member">
             <button type="submit" class="btn btn-primary btn-full">Зарегистрироваться</button>
             <div id="register-error" class="error-msg"></div>
             <div id="register-success" class="success-msg"></div>
@@ -50,7 +44,14 @@
 <div id="app-screen" class="screen hidden">
     <header class="app-header">
         <div class="header-brand">
-            <span class="vtb-badge-sm">ВТБ</span>
+            <button class="menu-toggle" id="menu-toggle">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="4" y1="6" x2="20" y2="6" stroke="#009FDF" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="4" y1="12" x2="20" y2="12" stroke="#009FDF" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="4" y1="18" x2="20" y2="18" stroke="#009FDF" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+            <img class="vtb-logo-header" src="data:image/png;base64,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" alt="ВТБ">
             <span class="brand-text">Семейный кошелёк</span>
         </div>
         <div class="header-actions">
@@ -63,35 +64,35 @@
     <div class="app-layout">
         <nav class="sidebar">
             <button class="nav-item active" data-section="dashboard">
-                <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+                <svg data-lucide="layout-dashboard" width="20" height="20"></svg>
                 <span>Обзор</span>
             </button>
             <button class="nav-item" data-section="members">
-                <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                <svg data-lucide="users" width="20" height="20"></svg>
                 <span>Участники</span>
             </button>
             <button class="nav-item" data-section="cashback">
-                <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+                <svg data-lucide="gift" width="20" height="20"></svg>
                 <span>Кешбэк</span>
             </button>
             <button class="nav-item" data-section="tasks">
-                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z"/></svg>
+                <svg data-lucide="check-square" width="20" height="20"></svg>
                 <span>Задачи</span>
             </button>
             <button class="nav-item" data-section="subscriptions">
-                <svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM5 15h14v3H5z"/></svg>
+                <svg data-lucide="credit-card" width="20" height="20"></svg>
                 <span>Подписки</span>
             </button>
             <button class="nav-item" data-section="calendar">
-                <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V5c0-1.11-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
+                <svg data-lucide="calendar" width="20" height="20"></svg>
                 <span>Календарь</span>
             </button>
             <button class="nav-item" data-section="junior">
-                <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-2 .89-2 2v11c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
+                <svg data-lucide="baby" width="20" height="20"></svg>
                 <span>Юниор</span>
             </button>
             <button class="nav-item" data-section="profile">
-                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <svg data-lucide="user" width="20" height="20"></svg>
                 <span>Профиль</span>
             </button>
         </nav>
@@ -104,13 +105,36 @@
                     <div><h2>Обзор семьи</h2><span class="subtitle" id="family-name-dash">—</span></div>
                 </div>
                 <div class="dashboard-grid">
-                    <div class="stat-card"><div class="stat-icon" style="background:#6366f1"><svg viewBox="0 0 24 24" fill="#fff"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div><div class="stat-info"><div class="stat-value" id="d-members">1</div><div class="stat-label">Участников</div></div></div>
-                    <div class="stat-card"><div class="stat-icon" style="background:#22c55e"><svg viewBox="0 0 24 24" fill="#fff"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg></div><div class="stat-info"><div class="stat-value" id="d-cashback">0 ₽</div><div class="stat-label">Кешбэк семьи</div></div></div>
-                    <div class="stat-card"><div class="stat-icon" style="background:#f59e0b"><svg viewBox="0 0 24 24" fill="#fff"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div><div class="stat-info"><div class="stat-value" id="d-tasks">0</div><div class="stat-label">Задач</div></div></div>
-                    <div class="stat-card"><div class="stat-icon" style="background:#ef4444"><svg viewBox="0 0 24 24" fill="#fff"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14z"/></svg></div><div class="stat-info"><div class="stat-value" id="d-subs">0</div><div class="stat-label">Подписок</div></div></div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><svg data-lucide="users" width="28" height="28"></svg></div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="d-members">1</div>
+                            <div class="stat-label">Участников</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><svg data-lucide="wallet" width="28" height="28"></svg></div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="d-cashback">0 ₽</div>
+                            <div class="stat-label">Кешбэк семьи</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><svg data-lucide="list-todo" width="28" height="28"></svg></div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="d-tasks">0</div>
+                            <div class="stat-label">Задач</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><svg data-lucide="repeat" width="28" height="28"></svg></div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="d-subs">0</div>
+                            <div class="stat-label">Подписок</div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Tier -->
                 <div class="tier-card">
                     <h3>Ваш тариф: <span id="tier-name">Старт</span></h3>
                     <p id="tier-desc" class="tier-desc-text">Бесплатный тариф. До 3 участников, базовый кешбэк, 1 общая цель.</p>
@@ -126,24 +150,19 @@
                     </div>
                 </div>
 
-                <!-- Quick actions -->
                 <div class="quick-actions">
                     <h3>Быстрые действия</h3>
                     <div class="actions-grid">
-                        <button class="action-btn" onclick="navigateTo('profile')">
-                            <svg viewBox="0 0 24 24"><path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                            Пригласить
-                        </button>
-                        <button class="action-btn" onclick="openGoalModal()">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        <button class="action-btn" id="dashboard-goal-btn">
+                            <svg data-lucide="target" width="28" height="28"></svg>
                             Новая цель
                         </button>
-                        <button class="action-btn" onclick="openTaskModal()">
-                            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z"/></svg>
+                        <button class="action-btn" id="dashboard-task-btn">
+                            <svg data-lucide="plus-circle" width="28" height="28"></svg>
                             Создать задачу
                         </button>
-                        <button class="action-btn" onclick="navigateTo('calendar')">
-                            <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V5c0-1.11-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
+                        <button class="action-btn" id="dashboard-calendar-btn">
+                            <svg data-lucide="calendar-plus" width="28" height="28"></svg>
                             Календарь
                         </button>
                     </div>
@@ -153,11 +172,49 @@
             <!-- MEMBERS -->
             <section id="members-section" class="page">
                 <div class="page-header">
-                    <div><h2>Участники семьи</h2><span class="subtitle" id="members-family-name">—</span></div>
-                    <button class="btn btn-primary" onclick="focusInviteForm()">+ Пригласить</button>
+                    <div>
+                        <h2>Участники семьи</h2>
+                        <span class="subtitle" id="members-family-name">—</span>
+                    </div>
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn-refresh" id="refresh-members-btn" title="Обновить список">
+                            <svg data-lucide="refresh-cw" width="18" height="18"></svg>
+                        </button>
+                        <button class="btn-add-member" id="invite-from-members">
+                            <svg data-lucide="user-plus" width="18" height="18"></svg>
+                            Добавить участника
+                        </button>
+                    </div>
                 </div>
-                <div id="members-list" class="members-grid"></div>
+                <div id="members-list" class="members-list-container"></div>
+                <div id="no-members-state" class="empty-members-state" style="display: none;">
+                    <div class="empty-members-icon">
+                        <svg data-lucide="users" width="64" height="64"></svg>
+                    </div>
+                    <h3>Здесь будут участники вашей семьи</h3>
+                    <p>Добавьте супруга, детей или других членов семьи, чтобы вместе управлять бюджетом и получать общий кешбэк.</p>
+                    <button class="btn-add-first" id="add-first-member-btn">
+                        <svg data-lucide="user-plus" width="16" height="16"></svg>
+                        Добавить первого участника
+                    </button>
+                </div>
             </section>
+
+            <!-- Invite Member Modal -->
+            <div id="invite-member-modal" class="modal hidden">
+                <div class="modal-content">
+                    <h3>Пригласить участника</h3>
+                    <form id="invite-member-form">
+                        <div class="field"><label>Email</label><input type="email" id="invite-member-email" placeholder="email@example.com" required></div>
+                        <div id="invite-member-error" class="error-msg"></div>
+                        <div id="invite-member-success" class="success-msg"></div>
+                        <div class="modal-actions">
+                            <button type="button" class="btn btn-sm" onclick="closeModal('invite-member-modal')">Отмена</button>
+                            <button type="submit" class="btn btn-primary btn-sm">Отправить приглашение</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
             <!-- CASHBACK -->
             <section id="cashback-section" class="page">
@@ -171,7 +228,7 @@
                 <h3>Категории группы</h3>
                 <div id="cb-cats" class="categories-grid"></div>
                 <div class="recommendation-banner" id="cb-rec">
-                    <svg viewBox="0 0 24 24"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/></svg>
+                    <svg data-lucide="lightbulb" width="24" height="24"></svg>
                     <div><strong>Рекомендация:</strong> <span id="cb-rec-text">Никто не выбрал «Кафе» — возьмите и получите 5%!</span></div>
                 </div>
             </section>
@@ -181,8 +238,14 @@
                 <div class="page-header">
                     <h2>Финансовые задачи</h2>
                     <div style="display:flex;gap:8px">
-                        <button class="btn btn-sm" onclick="openGoalModal()">+ Цель</button>
-                        <button class="btn btn-sm" onclick="openTaskModal()">+ Задача</button>
+                        <button class="btn btn-sm" id="tasks-goal-btn">
+                            <svg data-lucide="target" width="14" height="14" style="display:inline; margin-right:4px"></svg>
+                            Цель
+                        </button>
+                        <button class="btn btn-sm" id="tasks-task-btn">
+                            <svg data-lucide="plus" width="14" height="14" style="display:inline; margin-right:4px"></svg>
+                            Задача
+                        </button>
                     </div>
                 </div>
                 <div class="task-filters">
@@ -192,7 +255,10 @@
                     <button class="filter-btn" data-filter="ai">AI</button>
                 </div>
                 <div id="tasks-list" class="tasks-list"></div>
-                <div id="no-tasks" class="empty-state" style="display:none"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg><p>Нет задач</p></div>
+                <div id="no-tasks" class="empty-state" style="display:none">
+                    <svg data-lucide="inbox" width="64" height="64"></svg>
+                    <p>Нет задач</p>
+                </div>
             </section>
 
             <!-- SUBSCRIPTIONS -->
@@ -202,7 +268,10 @@
                     <div class="subs-total"><div class="subs-amount" id="sub-monthly">0 ₽</div><div class="subs-label">в месяц</div></div>
                     <div class="subs-yearly"><div class="subs-amount" id="sub-yearly">0 ₽</div><div class="subs-label">в год</div></div>
                 </div>
-                <div id="subs-dups" class="duplicates-alert" style="display:none"><svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg><div><strong>Найдены дубли!</strong> <span id="dups-text"></span></div></div>
+                <div id="subs-dups" class="duplicates-alert" style="display:none">
+                    <svg data-lucide="alert-triangle" width="24" height="24"></svg>
+                    <div><strong>Найдены дубли!</strong> <span id="dups-text"></span></div>
+                </div>
                 <div id="subs-list" class="subs-grid"></div>
             </section>
 
@@ -222,13 +291,28 @@
             <section id="junior-section" class="page">
                 <div class="page-header"><div><h2>ВТБ Юниор</h2><span class="subtitle">Финансовый помощник для детей</span></div></div>
                 <div class="junior-tabs">
-                    <button class="junior-tab active" data-jtab="jt">Задачи</button>
-                    <button class="junior-tab" data-jtab="jq">Квесты</button>
-                    <button class="junior-tab" data-jtab="jl">Уровни</button>
-                    <button class="junior-tab" data-jtab="jr">Запросы денег</button>
+                    <button class="junior-tab active" data-jtab="jt">
+                        <svg data-lucide="clipboard-list" width="14" height="14" style="display:inline; margin-right:4px"></svg>
+                        Задачи
+                    </button>
+                    <button class="junior-tab" data-jtab="jq">
+                        <svg data-lucide="medal" width="14" height="14" style="display:inline; margin-right:4px"></svg>
+                        Квесты
+                    </button>
+                    <button class="junior-tab" data-jtab="jl">
+                        <svg data-lucide="trending-up" width="14" height="14" style="display:inline; margin-right:4px"></svg>
+                        Уровни
+                    </button>
+                    <button class="junior-tab" data-jtab="jr">
+                        <svg data-lucide="send" width="14" height="14" style="display:inline; margin-right:4px"></svg>
+                        Запросы денег
+                    </button>
                 </div>
                 <div id="jt-view" class="jtab-content active">
-                    <button class="btn btn-primary btn-sm" onclick="openJTaskModal()">+ Задача для ребёнка</button>
+                    <button class="btn btn-primary btn-sm" id="junior-add-task-btn">
+                        <svg data-lucide="plus" width="14" height="14" style="display:inline; margin-right:4px"></svg>
+                        Задача для ребёнка
+                    </button>
                     <div id="jt-list" class="jtasks-list" style="margin-top:12px"></div>
                 </div>
                 <div id="jq-view" class="jtab-content"><div id="jq-list" class="jquests-grid"></div></div>
@@ -238,7 +322,14 @@
 
             <!-- PROFILE -->
             <section id="profile-section" class="page">
-                <div class="page-header"><h2>Профиль</h2></div>
+                <div class="page-header">
+                    <h2>Профиль</h2>
+                    <button class="btn-add-member" id="show-invite-form-btn">
+                        <svg data-lucide="user-plus" width="16" height="16"></svg>
+                        Пригласить в семью
+                    </button>
+                </div>
+                
                 <div class="profile-card">
                     <div class="profile-avatar"><span id="prof-init"></span></div>
                     <div class="profile-info">
@@ -249,56 +340,81 @@
                         <div class="profile-row"><span class="profile-label">Семья:</span><span id="prof-family"></span></div>
                     </div>
                 </div>
-                <!-- Форма приглашения -->
-<div style="margin-top: 32px; margin-bottom: 32px;">
-    <h3>Пригласить нового участника</h3>
-    <form id="invite-form" style="display: flex; gap: 8px; margin-top: 16px; max-width: 500px;">
-        <input type="email" id="invite-email" placeholder="email@example.com" required
-               style="flex:1; padding: 12px; border: 2px solid var(--border); border-radius: 8px;">
-        <button type="submit" class="btn btn-primary" style="white-space: nowrap;">Отправить приглашение</button>
-    </form>
-    <div id="invite-error" class="error-msg"></div>
-    <div id="invite-success" class="success-msg"></div>
-</div>
-                <!-- Приглашения внутри профиля -->
+                
+                <div id="invite-form-container" class="invite-form-container" style="display: none;">
+                    <div class="invite-card">
+                        <div class="invite-header">
+                            <h3>✉️ Пригласить нового участника</h3>
+                            <button class="close-invite-btn" id="close-invite-form">✕</button>
+                        </div>
+                        <p class="invite-desc">Отправьте приглашение по email. После принятия участник получит доступ к семейному кошельку.</p>
+                        <form id="invite-form">
+                            <div class="invite-input-group">
+                                <input type="email" id="invite-email" placeholder="Email участника" required>
+                                <button type="submit" class="btn btn-primary">
+                                    <svg data-lucide="send" width="16" height="16"></svg>
+                                    Отправить
+                                </button>
+                            </div>
+                            <div id="invite-error" class="error-msg"></div>
+                            <div id="invite-success" class="success-msg"></div>
+                        </form>
+                    </div>
+                </div>
+                
                 <div class="profile-invitations" style="margin-top:32px">
                     <div class="page-header" style="margin-top:0">
                         <h3>Приглашения</h3>
-                        <button class="btn btn-sm" id="refresh-inv">↻ Обновить</button>
+                        <button class="btn btn-sm" id="refresh-inv">
+                            <svg data-lucide="refresh-cw" width="14" height="14" style="display:inline; margin-right:4px"></svg>
+                            Обновить
+                        </button>
                     </div>
                     <div id="inv-list" class="waiters-grid"></div>
-                    <div id="no-inv" class="empty-state" style="display:none"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg><p>Нет приглашений</p></div>
+                    <div id="no-inv" class="empty-state" style="display:none">
+                        <svg data-lucide="mail" width="64" height="64"></svg>
+                        <p>Нет приглашений</p>
+                    </div>
                 </div>
             </section>
 
-            <!-- NO FAMILY — заглушка -->
+            <!-- NO FAMILY -->
             <section id="no-family-section" class="page">
                 <div class="no-family-page">
                     <div class="no-family-icon">
-                        <svg viewBox="0 0 100 100">
-                            <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="2"/>
-                            <circle cx="35" cy="40" r="8" fill="currentColor" opacity="0.8"/>
-                            <circle cx="65" cy="40" r="8" fill="currentColor" opacity="0.8"/>
-                            <circle cx="50" cy="65" r="8" fill="currentColor" opacity="0.8"/>
-                            <path d="M35 40 L65 40 M50 40 L50 65" stroke="currentColor" stroke-width="1.5"/>
-                        </svg>
+                        <svg data-lucide="users" width="120" height="120"></svg>
                     </div>
                     <h2>Добро пожаловать!</h2>
                     <p class="no-family-text">Чтобы получить доступ ко всем функциям, примите приглашение в семью.</p>
                     <div class="no-family-actions">
-                        <button class="btn btn-primary" onclick="navigateTo('profile')">
-                            <svg viewBox="0 0 24 24" style="width:20px;height:20px;vertical-align:middle;margin-right:6px"><path fill="currentColor" d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        <button class="btn btn-primary" id="no-family-profile-btn">
+                            <svg data-lucide="bell" width="18" height="18" style="display:inline; margin-right:6px"></svg>
                             Посмотреть приглашения
                         </button>
                     </div>
                     <div class="no-family-features">
                         <h3>Что будет доступно после подключения:</h3>
                         <div class="features-list">
-                            <div class="feature-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg><div><b>Общий кешбэк</b><span>Координируйте категории для максимума</span></div></div>
-                            <div class="feature-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z"/></svg><div><b>Финансовые задачи</b><span>Общие цели и бытовые платежи</span></div></div>
-                            <div class="feature-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM5 15h14v3H5z"/></svg><div><b>Трекер подписок</b><span>Находите дубли и экономьте</span></div></div>
-                            <div class="feature-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V5c0-1.11-.9-2-2-2zm0 16H5V8h14v11z"/></svg><div><b>Финансовый календарь</b><span>Планируйте платежи</span></div></div>
-                            <div class="feature-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-2 .89-2 2v11c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg><div><b>ВТБ Юниор</b><span>Задачи и квесты для детей</span></div></div>
+                            <div class="feature-item">
+                                <svg data-lucide="gift" width="32" height="32"></svg>
+                                <div><b>Общий кешбэк</b><span>Координируйте категории для максимума</span></div>
+                            </div>
+                            <div class="feature-item">
+                                <svg data-lucide="target" width="32" height="32"></svg>
+                                <div><b>Финансовые задачи</b><span>Общие цели и бытовые платежи</span></div>
+                            </div>
+                            <div class="feature-item">
+                                <svg data-lucide="credit-card" width="32" height="32"></svg>
+                                <div><b>Трекер подписок</b><span>Находите дубли и экономьте</span></div>
+                            </div>
+                            <div class="feature-item">
+                                <svg data-lucide="calendar" width="32" height="32"></svg>
+                                <div><b>Финансовый календарь</b><span>Планируйте платежи</span></div>
+                            </div>
+                            <div class="feature-item">
+                                <svg data-lucide="baby" width="32" height="32"></svg>
+                                <div><b>ВТБ Юниор</b><span>Задачи и квесты для детей</span></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -309,7 +425,6 @@
 </div>
 
 <!-- ===== MODALS ===== -->
-<!-- Goal Modal -->
 <div id="goal-modal" class="modal hidden">
     <div class="modal-content">
         <h3>Новая финансовая цель</h3>
@@ -326,7 +441,6 @@
     </div>
 </div>
 
-<!-- Task Modal -->
 <div id="task-modal" class="modal hidden">
     <div class="modal-content">
         <h3>Новая задача</h3>
@@ -343,7 +457,6 @@
     </div>
 </div>
 
-<!-- Junior Task Modal -->
 <div id="jtask-modal" class="modal hidden">
     <div class="modal-content">
         <h3>Задача для ребёнка</h3>
@@ -363,5 +476,32 @@
 <div id="loading" class="loading-overlay hidden"><div class="spinner"></div></div>
 
 <script src="app.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    });
+    
+    function refreshIcons() {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    }
+    
+    function closeModal(id) {
+        const modal = document.getElementById(id);
+        if (modal) modal.classList.add('hidden');
+    }
+    
+    const menuToggle = document.getElementById('menu-toggle');
+    const sidebar = document.querySelector('.sidebar');
+    
+    if (menuToggle && sidebar) {
+        menuToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('mobile-open');
+        });
+    }
+</script>
 </body>
 </html>

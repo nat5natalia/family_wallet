@@ -1,186 +1,69 @@
-from pydantic import BaseModel, EmailStr
-from typing import Optional, List
-from datetime import datetime, date
-from enum import Enum
-
-
-class WaiterStatus(str, Enum):
-    pending = "pending"
-    accepted = "accepted"
-    rejected = "rejected"
-
-
-class TaskType(str, Enum):
-    goal = "goal"
-    payment = "payment"
-    ai = "ai"
-
-
-class TaskStatus(str, Enum):
-    pending = "pending"
-    completed = "completed"
-
-
-# ===== Waiters =====
-class FamilyWaiterCreate(BaseModel):
-    email: EmailStr
-
-
-class FamilyWaiterResponse(BaseModel):
-    id: int
-    family_id: int
-    email: str
-    invited_by: int
-    invited_by_name: Optional[str] = None
-    status: WaiterStatus
-    created_at: Optional[datetime] = None
-    updated_at: Optional[datetime] = None
-
-    class Config:
-        from_attributes = True
-
-
-class FamilyWaiterListResponse(BaseModel):
-    waiters: list[FamilyWaiterResponse]
-    total: int
-
-
-# ===== Family =====
-class FamilyInfo(BaseModel):
-    id: int
-    name: str
-    owner_id: int
-    owner_name: Optional[str] = None
-    tier_name: str = "Старт"
-    created_at: Optional[datetime] = None
-    members_count: int = 1
-
-    class Config:
-        from_attributes = True
-
-
-# ===== Tasks =====
-class TaskCreate(BaseModel):
-    title: str
-    description: str
-    task_type: TaskType
-    amount: Optional[float] = None
-    deadline: Optional[datetime] = None
-    assignee_user_id: Optional[int] = None
-
-
-class TaskResponse(BaseModel):
-    id: int
-    title: str
-    description: str
-    task_type: TaskType
-    status: TaskStatus
-    amount: Optional[float] = None
-    current_amount: Optional[float] = 0
-    deadline: Optional[datetime] = None
-    assignee_user_id: Optional[int] = None
-    created_by: Optional[int] = None
-    created_at: Optional[datetime] = None
-
-    class Config:
-        from_attributes = True
-
-
-# ===== Subscriptions =====
-class SubscriptionResponse(BaseModel):
-    id: int
-    name: str
-    amount: float
-    currency: str = "RUB"
-    category: str
-    next_billing: Optional[date] = None
-    billing_period: str = "monthly"
-    owner_user_id: int
-    created_at: Optional[datetime] = None
-
-    class Config:
-        from_attributes = True
-
-
-# ===== Calendar =====
-class CalendarEventCreate(BaseModel):
-    title: str
-    description: Optional[str] = None
-    amount: Optional[float] = None
-    event_date: datetime
-    recurring: Optional[str] = None  # monthly, weekly, quarterly, yearly
-    responsible_user_id: Optional[int] = None
-
-
-class CalendarEventResponse(BaseModel):
-    id: int
-    title: str
-    description: Optional[str] = None
-    amount: Optional[float] = None
-    event_date: datetime
-    recurring: Optional[str] = None
-    responsible_user_id: Optional[int] = None
-    created_by: Optional[int] = None
-
-    class Config:
-        from_attributes = True
-
-
-# ===== Junior =====
-class JuniorTaskCreate(BaseModel):
-    title: str
-    reward: float
-    deadline: Optional[datetime] = None
-
-
-class JuniorTaskResponse(BaseModel):
-    id: int
-    title: str
-    reward: float
-    deadline: Optional[datetime] = None
-    status: TaskStatus
-    child_user_id: int
-    created_by: int
-    created_at: Optional[datetime] = None
-
-    class Config:
-        from_attributes = True
-
-
-class JuniorQuestResponse(BaseModel):
-    id: int
-    title: str
-    description: str
-    reward_text: str
-    completed: bool
-    completed_at: Optional[datetime] = None
-
-    class Config:
-        from_attributes = True
-
-
-class JuniorMoneyRequestResponse(BaseModel):
-    id: int
-    amount: float
-    reason: str
-    status: str  # pending, approved, rejected
-    created_at: Optional[datetime] = None
-    child_user_id: int
-    parent_approved_by: Optional[int] = None
-
-    class Config:
-        from_attributes = True
-
-class FamilyMemberResponse(BaseModel):
-    id: int
-    name: str
-    email: str
-    role: str
-    status: str  # member, pending и т.д.
-
-class FamilyMemberResponse(BaseModel):
-    id: int
-    name: str
-    email: str
-    role: str
-    status: str
+@router.get("/members", response_model=list[FamilyMemberResponse])
+async def list_family_members(
+    current_user=Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """Получить всех членов семьи текущего пользователя"""
+    import logging
+    logger = logging.getLogger(__name__)
+    
+    logger.info(f"Getting family members for user {current_user['user_id']}")
+    
+    # Получаем семью пользователя
+    family = await get_or_create_family_for_user(db, current_user["user_id"], current_user.get("username", ""))
+    
+    members = []
+    seen_emails = set()
+    
+    # 1. Добавляем владельца семьи (организатора)
+    owner_name = await get_username_by_id(family.owner_id)
+    owner_email = current_user.get("email", f"user_{family.owner_id}@example.com")
+    members.append(FamilyMemberResponse(
+        id=family.owner_id,
+        name=owner_name or f"User #{family.owner_id}",
+        email=owner_email,
+        role="organizer",
+        status="member"
+    ))
+    seen_emails.add(owner_email)
+    
+    # 2. Получаем всех, кто принял приглашение
+    from sqlalchemy import select
+    from models import FamilyWaiter, WaiterStatus
+    
+    waiters_result = await db.execute(
+        select(FamilyWaiter).where(
+            FamilyWaiter.family_id == family.id,
+            FamilyWaiter.status == WaiterStatus.accepted
+        )
+    )
+    accepted_waiters = waiters_result.scalars().all()
+    
+    logger.info(f"Found {len(accepted_waiters)} accepted waiters")
+    
+    # 3. Добавляем принявших участников
+    for w in accepted_waiters:
+        if w.email not in seen_emails:
+            members.append(FamilyMemberResponse(
+                id=w.id,
+                name=w.email.split('@')[0],
+                email=w.email,
+                role="member",
+                status="member"
+            ))
+            seen_emails.add(w.email)
+    
+    # 4. Также добавляем текущего пользователя, если он не владелец и не в списке
+    current_email = current_user.get("email")
+    if current_email and current_email not in seen_emails:
+        members.append(FamilyMemberResponse(
+            id=current_user["user_id"],
+            name=current_user.get("username", "Пользователь"),
+            email=current_email,
+            role="member",
+            status="member"
+        ))
+    
+    logger.info(f"Returning {len(members)} family members")
+    
+    return members
