@@ -22,7 +22,7 @@ if (hasFamily && savedFamilyMembers) {
     familyMembers = JSON.parse(savedFamilyMembers);
 }
 
-const roleNames = {organizer:'Организатор',spouse:'Супруг(а)',senior:'55+',teen:'Подросток',child:'Ребёнок'};
+const roleNames = {organizer:'Организатор',member: 'Участник',spouse:'Супруг(а)',senior:'55+',teen:'Подросток',child:'Ребёнок'};
 const avatarColors = ['#6366f1','#22c55e','#f59e0b','#ef4444','#ec4899','#8b5cf6','#14b8a6'];
 const $ = s => document.querySelector(s);
 const $$ = s => document.querySelectorAll(s);
@@ -85,8 +85,8 @@ async function doLogin(email, pass) {
 async function doRegister(username, email, pass, role) {
     showLoading();
     try {
-        // Если роль не передана или не найдена, используем 'member'
-        const userRole = (role && role !== 'undefined') ? role : 'member';
+        // Если роль не передана или не найдена, используем 'Участник'
+        const userRole = (role && role !== 'undefined') ? role : 'Участник';
         await api(AUTH.register, {method:'POST', body:JSON.stringify({username, email, password: pass, role: userRole})});
         const s=$('#register-success'), e=$('#register-error');
         if(s) s.textContent='Регистрация успешна!'; if(e) e.textContent='';
@@ -162,10 +162,10 @@ async function loadFamilyMembers() {
                 if (stored) {
                     familyMembers = JSON.parse(stored);
                 } else {
-                    familyMembers = [{id: user?.id, name: user?.username, email: user?.email, role: user?.role||'organizer', status:'member'}];
+                    familyMembers = [{id: user?.id, name: user?.username, email: user?.email, role: user?.role||'organizer', status:'Участник'}];
                 }
             } else {
-                familyMembers = [{id: user?.id, name: user?.username, email: user?.email, role: user?.role||'organizer', status:'member'}];
+                familyMembers = [{id: user?.id, name: user?.username, email: user?.email, role: user?.role||'organizer', status:'Участник'}];
             }
         }
     } catch (e) {
@@ -176,10 +176,10 @@ async function loadFamilyMembers() {
             if (stored) {
                 familyMembers = JSON.parse(stored);
             } else {
-                familyMembers = [{id: user?.id, name: user?.username, email: user?.email, role: user?.role||'organizer', status:'member'}];
+                familyMembers = [{id: user?.id, name: user?.username, email: user?.email, role: user?.role||'organizer', status:'Участник'}];
             }
         } else {
-            familyMembers = [{id: user?.id, name: user?.username, email: user?.email, role: user?.role||'organizer', status:'member'}];
+            familyMembers = [{id: user?.id, name: user?.username, email: user?.email, role: user?.role||'organizer', status:'Участник'}];
         }
     }
     updateFamilyMembersCount();
@@ -301,7 +301,7 @@ function refreshUI() {
 }
 
 function getTierName() {
-    const n = familyMembers.filter(m => m.status === 'member' || m.status !== 'pending').length;
+    const n = familyMembers.filter(m => m.status === 'Участник' || m.status !== 'pending').length;
     console.log('Подсчёт участников для тарифа:', n, familyMembers);
     if (n >= 6) return 'Расширенная семья';
     if (n >= 3) return 'Семья';
@@ -309,7 +309,7 @@ function getTierName() {
 }
 
 function updateFamilyMembersCount() {
-    const n = familyMembers.filter(m=>m.status==='member').length;
+    const n = familyMembers.filter(m=>m.status==='Участник').length;
     $('#d-members').textContent = n;
     if($('#prof-tier')) $('#prof-tier').textContent = getTierName();
     if($('#user-tier')) $('#user-tier').textContent = getTierName();
@@ -317,7 +317,7 @@ function updateFamilyMembersCount() {
 
 function loadDashboard() {
     if(!hasFamily) { navigateTo('no-family'); return; }
-    const n = familyMembers.filter(m=>m.status==='member').length;
+    const n = familyMembers.filter(m=>m.status==='Участник').length;
     $('#d-members').textContent = n;
     $('#d-tasks').textContent = tasks.length;
     $('#d-subs').textContent = '0';
@@ -475,12 +475,12 @@ async function loadInvitations() {
         list.innerHTML = myInvitations.map(inv => `
             <div class="waiter-card">
                 <div class="waiter-header">
-                    <span class="waiter-family">🏠 Семья «${inv.family_name || 'Семья'}»</span>
-                    <span class="waiter-status pending">⏳ Ожидает</span>
+                    <span class="waiter-family">Семья «${inv.family_name || 'Семья'}»</span>
+                    <span class="waiter-status pending">Ожидает</span>
                 </div>
                 <div class="waiter-details">
-                    <span>👤 Пригласил: <b>${inv.invited_by_name}</b></span>
-                    <span>📅 Отправлено: ${new Date(inv.created_at).toLocaleString('ru-RU')}</span>
+                    <span>Пригласил: <b>${inv.invited_by_name}</b></span>
+                    <span>Отправлено: ${new Date(inv.created_at).toLocaleString('ru-RU')}</span>
                 </div>
                 <div class="waiter-actions">
                     <button class="btn-accept" onclick="acceptInvitation(${inv.id})">✓ Принять</button>
@@ -528,7 +528,7 @@ window.acceptInvitation = async function(id) {
             name: invitation.invited_by_name,
             email: invitation.invited_by_email,
             role: 'organizer',
-            status: 'member'
+            status: 'Участник'
         });
     }
     
@@ -539,8 +539,8 @@ window.acceptInvitation = async function(id) {
             id: user?.id || Date.now(),
             name: user?.username,
             email: user?.email,
-            role: 'member',
-            status: 'member'
+            role: 'Участник',
+            status: 'Участник'
         });
     }
     
@@ -638,7 +638,7 @@ async function createWaiter(email) {
             name: familyId.split('@')[0],
             email: familyId,
             role: 'organizer',
-            status: 'member'
+            status: 'Участник'
         });
     }
     
@@ -649,8 +649,8 @@ async function createWaiter(email) {
             id: user?.id || Date.now(),
             name: user?.username,
             email: user?.email,
-            role: 'member',
-            status: 'member'
+            role: 'Участник',
+            status: 'Участник'
         });
     }
     
@@ -812,7 +812,7 @@ if (registerForm) {
             return;
         }
         
-        await doRegister(username, email, password, 'member');
+        await doRegister(username, email, password, 'Участник');
     };
     registerForm.addEventListener('submit', registerForm._submit);
 }
